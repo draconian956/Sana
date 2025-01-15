@@ -1,0 +1,30 @@
+networks:
+  sana:
+    name: sana
+
+services:
+  sana:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: sana
+    container_name: sana
+    ports:
+      - "15432:15432"
+    ipc: host
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      stack: 67108864
+    environment:
+      - DEMO_PORT=15432
+    networks:
+      - sana
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
